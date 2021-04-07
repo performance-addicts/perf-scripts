@@ -1,3 +1,5 @@
+// SWITCH TO IFRAME IN CONSOLE
+
 function bot(message) {
   const el = document.querySelector("div#input");
   el.textContent = message;
