@@ -33,3 +33,19 @@ function getATFVideoDetails() {
 }
 
 console.table(getATFVideoDetails());
+
+function findATFLazyLoadedImages() {
+  const lazy = document.querySelectorAll('[data-loading="lazy"]');
+  let flag = false;
+  lazy.forEach((tag) => {
+    const position = parseInt(tag.getBoundingClientRect().top);
+    if (position < window.innerHeight && position !== 0) {
+      console.log(tag, position);
+      flag = true;
+    }
+  });
+
+  return flag;
+}
+
+findATFLazyLoadedImages();
