@@ -28,7 +28,6 @@ function getATFVideoDetails() {
       }
     });
   }
-
   return details;
 }
 
@@ -48,4 +47,4 @@ function findATFLazyLoadedImages() {
   return flag;
 }
 
-findATFLazyLoadedImages();
+console.log(findATFLazyLoadedImages());
