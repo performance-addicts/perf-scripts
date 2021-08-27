@@ -1,0 +1,51 @@
+// modified from https://github.com/addyosmani/puppeteer-webperf
+
+const puppeteer = require("puppeteer");
+const fs = require("fs");
+(async () => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  // Gather coverage for JS and CSS files
+  await Promise.all([
+    page.coverage.startJSCoverage(),
+    page.coverage.startCSSCoverage(),
+  ]);
+
+  await page.goto("https://www.coach.com/shop/new/view-all");
+
+  // Stops the coverage gathering
+  const [jsCoverage, cssCoverage] = await Promise.all([
+    page.coverage.stopJSCoverage(),
+    page.coverage.stopCSSCoverage(),
+  ]);
+
+  // Calculates # bytes being used based on the coverage
+  const calculateUsedBytes = (type, coverage) =>
+    coverage.map(({ url, ranges, text }) => {
+      let usedBytes = 0;
+
+      ranges.forEach((range) => (usedBytes += range.end - range.start - 1));
+
+      return {
+        url,
+        type,
+        usedBytes,
+        totalBytes: text.length,
+        percentUsed: `${((usedBytes / text.length) * 100).toFixed(2)}%`,
+      };
+    });
+
+  console.info([
+    ...calculateUsedBytes("js", jsCoverage),
+    ...calculateUsedBytes("css", cssCoverage),
+  ]);
+
+  const js = JSON.stringify(calculateUsedBytes("js", jsCoverage), null, 2);
+  const css = JSON.stringify(calculateUsedBytes("css", cssCoverage), null, 2);
+
+  fs.writeFileSync("./results/js-coverage.json", js);
+  fs.writeFileSync("./results/css-coverage.json", css);
+
+  await browser.close();
+})();
