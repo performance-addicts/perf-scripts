@@ -2,6 +2,9 @@
 
 const puppeteer = require("puppeteer");
 const fs = require("fs");
+
+const url = "https://mw-production1.coach.com/";
+
 (async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -12,7 +15,7 @@ const fs = require("fs");
     page.coverage.startCSSCoverage(),
   ]);
 
-  await page.goto("https://www.coach.com/shop/new/view-all");
+  await page.goto(url);
 
   // Stops the coverage gathering
   const [jsCoverage, cssCoverage] = await Promise.all([
