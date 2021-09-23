@@ -39,16 +39,25 @@ const url = "https://mw-production1.coach.com/";
       };
     });
 
-  console.info([
-    ...calculateUsedBytes("js", jsCoverage),
-    ...calculateUsedBytes("css", cssCoverage),
-  ]);
+  // console.info([
+  //   ...calculateUsedBytes("js", jsCoverage),
+  //   ...calculateUsedBytes("css", cssCoverage),
+  // ]);
 
-  const js = JSON.stringify(calculateUsedBytes("js", jsCoverage), null, 2);
-  const css = JSON.stringify(calculateUsedBytes("css", cssCoverage), null, 2);
+  const nextChunks = calculateUsedBytes("js", jsCoverage).filter(({ url }) =>
+    url.includes("_next/static/chunks")
+  );
+  console.log(nextChunks);
 
-  fs.writeFileSync("./results/js-coverage.json", js);
-  fs.writeFileSync("./results/css-coverage.json", css);
+  const chunks = JSON.stringify(nextChunks, null, 2);
+
+  // const js = JSON.stringify(calculateUsedBytes("js", jsCoverage), null, 2);
+  // const css = JSON.stringify(calculateUsedBytes("css", cssCoverage), null, 2);
+
+  // fs.writeFileSync("./results/js-coverage-pdp.json", js);
+  // fs.writeFileSync("./results/css-coverage.json", css);
+
+  fs.writeFileSync("./results/chunks/hp.json", chunks);
 
   await browser.close();
 })();
