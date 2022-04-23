@@ -1,5 +1,3 @@
 # perf-scripts
 
-PerformanceObserver.supportedEntryTypes
-
-// returns ["element", "event", "first-input", "largest-contentful-paint", "layout-shift", "longtask", "mark", "measure", "navigation", "paint", "resource"] in Chrome 89
+Credit to web.dev, addy osmani, workeffortwaste, Greg Wolf, Tim Kadlec, and a few more I'm sorry I forgot.
